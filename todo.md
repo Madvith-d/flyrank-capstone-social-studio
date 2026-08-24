@@ -17,4 +17,4 @@
 - [x] Add deterministic tests for blocked constraints, refused unapproved scheduling, duplicate publishing, resumable processing, and adapter configuration swaps.
 - [ ] Add README.md, EVIDENCE.md, BUILDLOG.md, and .env.example with reviewer-ready run, seed, architecture, and limitation documentation. README.md, EVIDENCE.md, BUILDLOG.md, seed material, and managed secret documentation are complete; secure project controls prevent directly committing an environment file.
 - [x] Validate type-checking, test suite, database migration, functionality, visual layout, and responsive behavior.
-- [ ] Sync the completed project into the selected public GitHub repository without committing secrets.
+- [x] Sync the completed project into the selected public GitHub repository without committing secrets.
