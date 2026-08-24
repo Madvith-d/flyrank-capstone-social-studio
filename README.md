@@ -60,7 +60,7 @@ No mock customer content or reviews are used. The reproducible campaign seed is 
 
 ## Telegram configuration
 
-Copy `.env.example` to `.env` for an independent local deployment, or set the same values in the hosting environment. Never commit a real token.
+Use the values in [`ENVIRONMENT_TEMPLATE.md`](./ENVIRONMENT_TEMPLATE.md) for an independent local deployment, or set the same names in the hosting environment. This managed project intentionally prevents direct `.env` and `.env.example` file writes; the tracked template provides the same safe placeholder contract. Never commit a real token.
 
 ```dotenv
 TELEGRAM_BOT_TOKEN=replace_with_botfather_token
@@ -99,9 +99,9 @@ The test suite covers generated constraints, blocked invalid content, approved-o
 | [`DESIGN.md`](./DESIGN.md) | Design, data model, contracts, and reliability boundaries. |
 | [`EVIDENCE.md`](./EVIDENCE.md) | Acceptance-probe evidence and exact test mapping. |
 | [`BUILDLOG.md`](./BUILDLOG.md) | Honest AI assistance record. |
-| [`.env.example`](./.env.example) | Safe variable names and placeholders only. |
+| [`ENVIRONMENT_TEMPLATE.md`](./ENVIRONMENT_TEMPLATE.md) | Safe variable names and placeholders only; replaces a direct `.env.example` in this managed project. |
 | [`sample-post.md`](./sample-post.md) | Reviewer-ready canonical campaign seed. |
 
 ## Repository hygiene
 
-The project is intended for the selected `Madvith-d/flyrank-capstone-social-studio` repository. Its `.gitignore` excludes `.env` files, and `.env.example` carries placeholders only. Before submitting, ensure the repository is public and the current branch is pushed without secrets.
+The project is intended for the selected `Madvith-d/flyrank-capstone-social-studio` repository. Its `.gitignore` excludes `.env` files, and `ENVIRONMENT_TEMPLATE.md` documents safe placeholders only. Before submitting, ensure the repository is public and the current branch is pushed without secrets.

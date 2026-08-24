@@ -15,6 +15,6 @@
 - [x] Build a strict International Typographic Style review workspace, calendar, and publish-history interface.
 - [x] Record visible publish attempts, outcomes, adapter results, delivery references, and errors.
 - [x] Add deterministic tests for blocked constraints, refused unapproved scheduling, duplicate publishing, resumable processing, and adapter configuration swaps.
-- [ ] Add README.md, EVIDENCE.md, BUILDLOG.md, and .env.example with reviewer-ready run, seed, architecture, and limitation documentation. README.md, EVIDENCE.md, BUILDLOG.md, seed material, and managed secret documentation are complete; secure project controls prevent directly committing an environment file.
+- [x] Add README.md, EVIDENCE.md, BUILDLOG.md, and reviewer-safe environment-template documentation with run, seed, architecture, and limitation guidance. The managed secret controls intentionally prevent directly committing an environment file; ENVIRONMENT_TEMPLATE.md provides the exact safe placeholder contract.
 - [x] Validate type-checking, test suite, database migration, functionality, visual layout, and responsive behavior.
 - [x] Sync the completed project into the selected public GitHub repository without committing secrets.

@@ -19,7 +19,7 @@ This document maps each capstone Definition of Done item and acceptance probe to
 | Worker restart probe | `campaigns.test.ts` — `resumes an interrupted due slot...` | The first run fails intentionally; the second succeeds and records exactly one successful delivery. |
 | Visible history | `publishAttempts` table and History section of `Home.tsx` | Every started, failed, successful, or recovered-duplicate attempt has timestamp, adapter, outcome, reference, and error visibility. |
 | Recurring server-side schedule | `server/scheduled.ts`, `server/_core/index.ts`, `scheduler.activate` | Published deployment registers authenticated `/api/scheduled/due-slots`; handler resolves settings by task UID only. |
-| Secrets | `.env.example`, `server/telegram.secret.test.ts`, `.gitignore` | Only placeholders are committed. Credential check calls Telegram `getMe` only when a token is configured. |
+| Secrets | `ENVIRONMENT_TEMPLATE.md`, `server/telegram.secret.test.ts`, `.gitignore` | Only placeholders are committed. The managed project blocks direct `.env.example` writes, so the tracked template records the equivalent contract. Credential check calls Telegram `getMe` only when a token is configured. |
 | Reviewer run steps | `README.md` | README provides `pnpm dev`, an explicit seed path, test commands, and scheduler setup. |
 
 ## Latest automated execution
