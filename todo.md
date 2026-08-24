@@ -1,0 +1,20 @@
+# Project TODO
+
+- [x] Define and migrate durable data models for canonical posts, campaigns, variants, slots, attempts, and adapter previews.
+- [x] Add a reviewer-ready design document covering the problem, data model, API surface, reliability guarantees, and one explicit non-goal.
+- [x] Implement canonical source ingestion for either URL content or pasted Markdown/text.
+- [x] Generate deterministic X, LinkedIn, and Telegram variants only from stored canonical source content.
+- [x] Enforce platform-specific length, tone, and hashtag constraints before variants reach review.
+- [x] Implement the draft, approved, rejected, and published review workflow with editing.
+- [x] Reject scheduling requests for variants that are not approved with a clear tRPC 4xx error.
+- [x] Implement the SocialPublisher interface with configurable Telegram, Mock X, and Mock LinkedIn adapters.
+- [x] Persist Mock X and Mock LinkedIn delivery previews in the database.
+- [x] Implement stable idempotency keys and database safeguards for each variant and time slot.
+- [x] Implement a durable due-slot processor that can resume after interruption without duplicate successful deliveries.
+- [x] Register an authenticated recurring server-side due-slot job that is safe to retry.
+- [x] Build a strict International Typographic Style review workspace, calendar, and publish-history interface.
+- [x] Record visible publish attempts, outcomes, adapter results, delivery references, and errors.
+- [x] Add deterministic tests for blocked constraints, refused unapproved scheduling, duplicate publishing, resumable processing, and adapter configuration swaps.
+- [ ] Add README.md, EVIDENCE.md, BUILDLOG.md, and .env.example with reviewer-ready run, seed, architecture, and limitation documentation. README.md, EVIDENCE.md, BUILDLOG.md, seed material, and managed secret documentation are complete; secure project controls prevent directly committing an environment file.
+- [x] Validate type-checking, test suite, database migration, functionality, visual layout, and responsive behavior.
+- [ ] Sync the completed project into the selected public GitHub repository without committing secrets.
