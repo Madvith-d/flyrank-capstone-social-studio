@@ -23,3 +23,5 @@
 - [x] Prevent empty or too-short campaign names from reaching the campaign-create mutation, with clear inline client guidance.
 - [x] Ensure the scheduler query always returns a defined, stable result when no scheduler settings exist.
 - [x] Add regression tests and verify the repaired campaign creation and scheduler-empty-state paths.
+- [x] Prevent preview-mode automatic scheduler activation from surfacing a tRPC client error while retaining the production-only callback safeguard.
+- [x] Add regression coverage and verify the preview scheduler control communicates the correct activation path.
