@@ -18,3 +18,5 @@
 - [x] Add README.md, EVIDENCE.md, BUILDLOG.md, and reviewer-safe environment-template documentation with run, seed, architecture, and limitation guidance. The managed secret controls intentionally prevent directly committing an environment file; ENVIRONMENT_TEMPLATE.md provides the exact safe placeholder contract.
 - [x] Validate type-checking, test suite, database migration, functionality, visual layout, and responsive behavior.
 - [x] Sync the completed project into the selected public GitHub repository without committing secrets.
+- [x] Redesign the studio as Swiss Systems 2.0 with more editorial breathing room, refined navigation, and sharper workflow hierarchy while preserving all campaign operations.
+- [x] Verify the Swiss Systems 2.0 redesign at desktop and mobile breakpoints without regressing the authenticated product flows.

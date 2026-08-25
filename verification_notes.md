@@ -17,3 +17,7 @@ The narrow 375px verification also displayed a short initial query spinner, foll
 ## Connected-browser attempt
 
 The connected personal-browser preview reached the protected sign-in gate, but the subsequent sign-in click could not establish a browser-bridge connection. No account details, form data, or publishing action were attempted. End-to-end reliability therefore remains evidenced by deterministic server tests and the protected workspace screenshots rather than a live personal-account browser walkthrough in this session.
+
+## Swiss Systems 2.0 redesign check
+
+The updated desktop workspace rendered as an editorial operations console with a strengthened left rail, numbered navigation, a more spacious asymmetric hero, a dedicated red control field, compact operational metrics, and consistently proportioned workflow modules. The 375px capture retained the bold hierarchy without overlap: the top brand rail, operator strip, navigation, compact status metrics, and source handoff remained readable and touch-accessible. The new navigation is also functional: each rail item now scrolls to its related source, schedule, or ledger section.

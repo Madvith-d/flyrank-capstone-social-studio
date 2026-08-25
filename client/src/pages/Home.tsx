@@ -27,9 +27,9 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 const navItems = [
-  { id: "studio", label: "Studio", icon: Radio },
-  { id: "calendar", label: "Calendar", icon: CalendarDays },
-  { id: "history", label: "History", icon: History },
+  { id: "studio", label: "Source desk", target: "source-workbench", icon: Radio },
+  { id: "calendar", label: "Schedule", target: "schedule-board", icon: CalendarDays },
+  { id: "history", label: "Ledger", target: "publish-ledger", icon: History },
 ];
 
 const statusStyles = {
@@ -149,6 +149,11 @@ export default function Home() {
     scheduleVariant.mutate({ variantId, scheduledAt: new Date(raw) });
   };
 
+  const navigateTo = (id: string, target: string) => {
+    setActiveView(id);
+    document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   if (loading) {
     return <div className="grid min-h-screen place-items-center"><Loader2 className="animate-spin" /></div>;
   }
@@ -172,55 +177,61 @@ export default function Home() {
   const attempts = selectedCampaign?.attempts ?? [];
 
   return (
-    <div className="min-h-screen bg-white text-black">
-      <header className="grid-border flex min-h-16 items-center justify-between px-5 sm:px-8">
-        <div className="flex items-center gap-3">
-          <div className="h-5 w-5 bg-[#e31b23]" />
-          <span className="text-xs font-bold uppercase tracking-[0.18em]">Social Media Studio</span>
+    <div className="swiss-shell min-h-screen bg-[#fdfdfb] text-black">
+      <header className="grid-border sticky top-0 z-20 flex min-h-20 items-center justify-between bg-[#fdfdfb]/95 px-5 backdrop-blur-sm sm:px-8 lg:px-10">
+        <div className="flex items-center gap-4">
+          <div className="grid h-8 w-8 place-items-center bg-[#e31b23] text-[10px] font-black text-white">S</div>
+          <div>
+            <span className="text-xs font-black uppercase tracking-[0.2em]">Social Media Studio</span>
+            <p className="mt-0.5 hidden text-[9px] font-bold uppercase tracking-[0.14em] text-neutral-500 sm:block">Editorial campaign operations</p>
+          </div>
         </div>
-        <div className="hidden items-center gap-5 text-[10px] font-bold uppercase tracking-[0.16em] sm:flex">
-          <span>Canonical / Review-first</span>
-          <span className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-[#e31b23]" /> {scheduler?.isEnabled ? "Auto-run live" : "Manual run"}</span>
+        <div className="flex items-center gap-5 text-[10px] font-bold uppercase tracking-[0.16em]">
+          <span className="hidden lg:inline">System 01 / 03 networks</span>
+          <span className="flex items-center gap-2"><span className={cn("h-2 w-2 rounded-full", scheduler?.isEnabled ? "bg-[#e31b23]" : "bg-neutral-300")} /> {scheduler?.isEnabled ? "Auto-run live" : "Manual run"}</span>
         </div>
       </header>
 
-      <div className="grid min-h-[calc(100vh-4rem)] lg:grid-cols-[205px_minmax(0,1fr)]">
-        <aside className="grid-border lg:border-b-0 lg:border-r">
-          <div className="flex items-center justify-between border-b border-black px-5 py-5 lg:block lg:border-b-0 lg:py-8">
-            <p className="eyebrow">OPERATOR</p>
-            <p className="mt-1 text-sm font-bold">{user?.name ?? "Studio user"}</p>
+      <div className="grid min-h-[calc(100vh-5rem)] lg:grid-cols-[248px_minmax(0,1fr)]">
+        <aside className="grid-border bg-white/60 lg:sticky lg:top-20 lg:h-[calc(100vh-5rem)] lg:border-b-0 lg:border-r">
+          <div className="flex items-center justify-between border-b border-black px-5 py-5 lg:block lg:border-b-0 lg:px-6 lg:py-8">
+            <p className="eyebrow text-neutral-500">OPERATOR / {String(user?.id ?? 0).padStart(3, "0")}</p>
+            <p className="mt-2 text-sm font-black tracking-[-0.02em]">{user?.name ?? "Studio user"}</p>
           </div>
-          <nav className="flex border-b border-black lg:block lg:border-b-0 lg:px-3">
+          <nav className="flex border-b border-black lg:block lg:border-b-0 lg:px-4">
             {navItems.map(item => {
               const Icon = item.icon;
               const active = activeView === item.id;
               return (
-                <button key={item.id} onClick={() => setActiveView(item.id)} className={cn("flex flex-1 items-center gap-2 border-r border-black px-3 py-4 text-left text-xs font-bold uppercase tracking-[0.08em] last:border-r-0 lg:mb-1 lg:border-r-0", active ? "bg-black text-white" : "hover:bg-[#e31b23] hover:text-white")}>
-                  <Icon className="h-4 w-4" /> {item.label}
+                <button key={item.id} onClick={() => navigateTo(item.id, item.target)} className={cn("group flex flex-1 items-center gap-2 border-r border-black px-3 py-4 text-left text-xs font-bold uppercase tracking-[0.08em] last:border-r-0 lg:mb-1 lg:border-r-0 lg:px-3 lg:py-3", active ? "bg-black text-white" : "hover:bg-[#e31b23] hover:text-white")}>
+                  <span className={cn("hidden text-[10px] lg:block", active ? "text-[#e31b23]" : "text-neutral-400 group-hover:text-white")}>0{navItems.indexOf(item) + 1}</span><Icon className="h-4 w-4" /> {item.label}
                 </button>
               );
             })}
           </nav>
-          <div className="hidden border-t border-black px-5 py-5 lg:block lg:absolute lg:bottom-0 lg:w-[205px]">
-            <p className="eyebrow">SYSTEM</p>
-            <p className="mt-2 text-xs leading-5 text-neutral-600">Deterministic templates. Database-backed slots. Adapter-isolated delivery.</p>
+          <div className="hidden border-t border-black px-6 py-6 lg:block lg:absolute lg:bottom-0 lg:w-[248px]">
+            <p className="eyebrow text-neutral-500">SYSTEM / GUARANTEES</p>
+            <p className="mt-3 text-xs leading-5 text-neutral-600">Canonical source. Constraint gate. Durable slots. Isolated adapters.</p>
+            <div className="mt-5 h-px w-12 bg-[#e31b23]" />
           </div>
         </aside>
 
         <main className="overflow-hidden">
-          <section className="grid-border grid gap-6 px-5 py-8 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-10 lg:py-12">
-            <div className="lg:col-span-8">
-              <p className="eyebrow">CAMPAIGN OPERATIONS / 01</p>
-              <h1 className="mt-4 max-w-4xl text-5xl font-black uppercase leading-[0.84] tracking-[-0.075em] sm:text-7xl">Make one idea travel —<br /><span className="text-[#e31b23]">without losing control.</span></h1>
+          <section className="grid-border relative grid gap-10 overflow-hidden px-5 py-12 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-12 lg:py-20">
+            <div className="absolute right-0 top-0 hidden h-44 w-44 bg-[#e31b23] lg:block" />
+            <div className="relative lg:col-span-8">
+              <div className="flex items-center gap-3"><p className="eyebrow">CAMPAIGN OPERATIONS / 01</p><span className="h-px w-12 bg-black" /></div>
+              <h1 className="mt-6 max-w-4xl text-5xl font-black uppercase leading-[0.84] tracking-[-0.08em] sm:text-7xl xl:text-8xl">One source.<br /><span className="text-[#e31b23]">Measured</span> spread.</h1>
+              <div className="mt-9 grid max-w-xl grid-cols-3 gap-5 border-t border-black pt-4"><div><p className="eyebrow text-neutral-500">Channels</p><p className="mt-1 text-2xl font-black tracking-[-0.06em]">03</p></div><div><p className="eyebrow text-neutral-500">Gate</p><p className="mt-1 text-2xl font-black tracking-[-0.06em]">01</p></div><div><p className="eyebrow text-neutral-500">Retries</p><p className="mt-1 text-2xl font-black tracking-[-0.06em]">Safe</p></div></div>
             </div>
-            <div className="flex flex-col justify-end border-t-2 border-black pt-4 lg:col-span-4 lg:border-t-0 lg:border-l-2 lg:pl-6 lg:pt-0">
-              <p className="text-sm leading-6">A deliberate system for authoring compliant variants, keeping a human approval gate, and publishing each scheduled delivery one time.</p>
-              <div className="mt-5 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.12em]"><ShieldCheck className="h-4 w-4 text-[#e31b23]" /> Idempotency protected</div>
+            <div className="relative flex flex-col justify-end border-t border-black pt-5 lg:col-span-4 lg:border-t-0 lg:border-l lg:pl-8 lg:pt-0">
+              <p className="max-w-sm text-base leading-7">Campaign operations that give each channel a distinct voice without loosening control over the original idea.</p>
+              <div className="mt-7 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.12em]"><ShieldCheck className="h-4 w-4 text-[#e31b23]" /> Idempotency protected</div>
             </div>
           </section>
 
-          <section className="grid gap-px bg-black lg:grid-cols-12">
-            <form onSubmit={handleCreate} className="bg-white p-5 sm:p-8 lg:col-span-5">
+          <section id="source-workbench" className="scroll-mt-24 grid gap-px bg-black lg:grid-cols-12">
+            <form onSubmit={handleCreate} className="bg-[#f7f7f3] p-6 sm:p-8 lg:col-span-5 lg:p-10">
               <div className="mb-6 flex items-start justify-between gap-4">
                 <div><p className="eyebrow">01 / CANONICAL SOURCE</p><h2 className="mt-2 text-2xl font-black uppercase tracking-[-0.04em]">Ingest once</h2></div>
                 <Plus className="h-5 w-5 text-[#e31b23]" />
@@ -234,7 +245,7 @@ export default function Home() {
               <Button disabled={createCampaign.isPending} type="submit" className="mt-6 w-full rounded-none bg-[#e31b23] font-bold uppercase tracking-[0.12em] text-white hover:bg-black">{createCampaign.isPending ? <Loader2 className="animate-spin" /> : "Store canonical source"}<ChevronRight className="ml-2 h-4 w-4" /></Button>
             </form>
 
-            <section className="bg-[#f4f4f1] p-5 sm:p-8 lg:col-span-7">
+            <section className="bg-white p-6 sm:p-8 lg:col-span-7 lg:p-10">
               <div className="flex items-start justify-between gap-4 border-b border-black pb-5">
                 <div><p className="eyebrow">02 / CAMPAIGN SELECTOR</p><h2 className="mt-2 text-2xl font-black uppercase tracking-[-0.04em]">Source is truth</h2></div>
                 <Button variant="outline" onClick={() => refreshCampaigns()} className="rounded-none border-black"><RefreshCw className="h-4 w-4" /></Button>
@@ -246,7 +257,7 @@ export default function Home() {
             </section>
           </section>
 
-          <section className="grid-border px-5 py-8 sm:px-8 lg:px-10">
+          <section id="review-desk" className="grid-border scroll-mt-24 bg-[#fdfdfb] px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
             <div className="flex flex-wrap items-end justify-between gap-4 border-b-2 border-black pb-4">
               <div><p className="eyebrow">03 / HUMAN REVIEW GATE</p><h2 className="mt-2 text-3xl font-black uppercase tracking-[-0.05em]">Variant desk <span className="text-[#e31b23]">/ {variants.length.toString().padStart(2, "0")}</span></h2></div>
               <p className="max-w-sm text-xs leading-5 text-neutral-600">Edited drafts are revalidated. Only variants that pass constraints and receive approval can enter a calendar slot.</p>
@@ -257,13 +268,13 @@ export default function Home() {
               return <article key={variant.id} className="grid gap-5 py-6 lg:grid-cols-12 lg:gap-8"><div className="lg:col-span-2"><p className="text-2xl font-black uppercase tracking-[-0.05em]">{variant.platform}</p><span className={cn("mt-3 inline-flex px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em]", statusStyles[variant.status])}>{variant.status}</span><p className="mt-4 text-[10px] font-bold uppercase tracking-[0.12em] text-neutral-500">{profile.characterCount}/{profile.profile.maxCharacters} chars</p><p className="mt-1 text-[10px] font-bold uppercase tracking-[0.12em] text-neutral-500">{profile.hashtagCount}/{profile.profile.maxHashtags} tags</p></div><div className="lg:col-span-6"><Textarea key={`${variant.id}-${variant.revision}`} defaultValue={variant.content} onBlur={event => { if (event.target.value !== variant.content) handleSaveVariant(variant.id, event.target.value); }} className="studio-textarea min-h-36" /><p className="mt-2 text-[10px] uppercase tracking-[0.1em] text-neutral-500">Tone: {profile.profile.tone} · revision {variant.revision}</p></div><div className="flex flex-col gap-2 lg:col-span-4"><div className="grid grid-cols-2 gap-2"><Button disabled={variant.status === "published" || reviewVariant.isPending} onClick={() => reviewVariant.mutate({ variantId: variant.id, status: "approved" })} className="rounded-none bg-black text-xs font-bold uppercase tracking-[0.08em] text-white hover:bg-[#e31b23]"><Check className="mr-1 h-3.5 w-3.5" />Approve</Button><Button disabled={variant.status === "published" || reviewVariant.isPending} onClick={() => reviewVariant.mutate({ variantId: variant.id, status: "rejected" })} variant="outline" className="rounded-none border-black text-xs font-bold uppercase tracking-[0.08em] hover:bg-[#e31b23] hover:text-white"><X className="mr-1 h-3.5 w-3.5" />Reject</Button></div><label className="field-label mt-2">Time slot</label><Input type="datetime-local" min={toLocalDateTime(new Date())} value={nextSchedule} onChange={event => setScheduleTimes(current => ({ ...current, [variant.id]: event.target.value }))} className="studio-input text-xs" /><Button disabled={variant.status !== "approved" || scheduleVariant.isPending} onClick={() => handleSchedule(variant.id)} variant="outline" className="rounded-none border-black text-xs font-bold uppercase tracking-[0.08em] hover:bg-black hover:text-white"><Clock3 className="mr-1 h-3.5 w-3.5" />Schedule approved</Button>{variant.status !== "approved" && variant.status !== "published" && <p className="mt-1 flex items-start gap-2 text-[11px] leading-4 text-[#e31b23]"><CircleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" />Approval required before scheduling.</p>}</div></article>})}</div>}
           </section>
 
-          <section className="grid gap-px bg-black lg:grid-cols-12">
-            <section className="bg-white p-5 sm:p-8 lg:col-span-7">
+          <section id="schedule-board" className="scroll-mt-24 grid gap-px bg-black lg:grid-cols-12">
+            <section className="bg-white p-6 sm:p-8 lg:col-span-7 lg:p-10">
               <div className="flex items-end justify-between border-b-2 border-black pb-4"><div><p className="eyebrow">04 / DURABLE CALENDAR</p><h2 className="mt-2 text-3xl font-black uppercase tracking-[-0.05em]">Scheduled slots</h2></div><Button disabled={runDue.isPending} onClick={() => runDue.mutate()} className="rounded-none bg-black text-white hover:bg-[#e31b23]"><Play className="mr-2 h-4 w-4" />Run due now</Button></div><div className="mt-5 space-y-2">{slots.length ? slots.map(slot => { const variant = variants.find(item => item.id === slot.variantId); return <div key={slot.id} className="grid grid-cols-[1fr_auto] gap-4 border border-black p-4 sm:grid-cols-[1.2fr_1fr_auto]"><div><p className="text-sm font-bold uppercase">{variant?.platform ?? "Variant"}</p><p className="mt-1 text-xs text-neutral-600">{new Date(slot.scheduledAt).toLocaleString()}</p></div><p className="hidden self-center text-[10px] font-bold uppercase tracking-[0.1em] text-neutral-500 sm:block">key {slot.idempotencyKey.slice(0, 12)}…</p><span className={cn("self-center px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em]", slot.status === "published" ? "bg-[#e31b23] text-white" : slot.status === "processing" ? "bg-black text-white" : "bg-neutral-100")}>{slot.status}</span></div>}) : <p className="py-8 text-sm text-neutral-600">Approved variants will appear here after a UTC-backed slot is saved.</p>}</div></section>
-            <section className="bg-[#e31b23] p-5 text-white sm:p-8 lg:col-span-5"><p className="eyebrow text-white">AUTOMATION / SERVER SIDE</p><h2 className="mt-3 text-3xl font-black uppercase leading-[0.9] tracking-[-0.06em]">Due slot<br />processor</h2><p className="mt-5 max-w-sm text-sm leading-6 text-white/85">The live callback validates its platform identity, resumes stale claims, and uses the same stable key for every retry.</p><div className="mt-8 border-t border-white/70 pt-5"><p className="text-[10px] font-bold uppercase tracking-[0.12em]">Recurrence</p><p className="mt-1 text-sm">{scheduler?.isEnabled ? `Active · ${scheduler.cronExpression} UTC` : "Manual until activated after publish"}</p><Button disabled={activateScheduler.isPending} onClick={() => activateScheduler.mutate({ cronExpression: "0 * * * * *" })} variant="outline" className="mt-5 rounded-none border-white bg-white text-black hover:bg-black hover:text-white">{activateScheduler.isPending ? <Loader2 className="animate-spin" /> : <Send className="mr-2 h-4 w-4" />}{scheduler?.isEnabled ? "Refresh auto-run" : "Activate auto-run"}</Button><p className="mt-3 text-[11px] leading-4 text-white/75">Activation becomes available on the published site; the local “Run due now” control remains useful for review.</p></div></section>
+            <section className="bg-[#e31b23] p-6 text-white sm:p-8 lg:col-span-5 lg:p-10"><p className="eyebrow text-white">AUTOMATION / SERVER SIDE</p><div className="mt-10 h-px w-16 bg-white" /><h2 className="mt-6 text-4xl font-black uppercase leading-[0.86] tracking-[-0.07em]">Due-slot<br />processor</h2><p className="mt-6 max-w-sm text-sm leading-6 text-white/85">The live callback validates its platform identity, resumes stale claims, and uses the same stable key for every retry.</p><div className="mt-10 border-t border-white/70 pt-5"><p className="text-[10px] font-bold uppercase tracking-[0.12em]">Recurrence</p><p className="mt-1 text-sm">{scheduler?.isEnabled ? `Active · ${scheduler.cronExpression} UTC` : "Manual until activated after publish"}</p><Button disabled={activateScheduler.isPending} onClick={() => activateScheduler.mutate({ cronExpression: "0 * * * * *" })} variant="outline" className="mt-5 rounded-none border-white bg-white text-black hover:bg-black hover:text-white">{activateScheduler.isPending ? <Loader2 className="animate-spin" /> : <Send className="mr-2 h-4 w-4" />}{scheduler?.isEnabled ? "Refresh auto-run" : "Activate auto-run"}</Button><p className="mt-3 text-[11px] leading-4 text-white/75">Activation becomes available on the published site; the local “Run due now” control remains useful for review.</p></div></section>
           </section>
 
-          <section className="px-5 py-8 sm:px-8 lg:px-10 lg:py-10">
+          <section id="publish-ledger" className="scroll-mt-24 bg-[#f7f7f3] px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
             <div className="flex items-end justify-between border-b-2 border-black pb-4"><div><p className="eyebrow">05 / AUDIT TRAIL</p><h2 className="mt-2 text-3xl font-black uppercase tracking-[-0.05em]">Publish history</h2></div><p className="text-[10px] font-bold uppercase tracking-[0.12em]">{attempts.length} recorded attempts</p></div><div className="mt-4 overflow-x-auto"><table className="w-full min-w-[680px] border-collapse text-left"><thead className="border-b border-black text-[10px] font-bold uppercase tracking-[0.13em]"><tr><th className="pb-3">Time</th><th className="pb-3">Adapter</th><th className="pb-3">Outcome</th><th className="pb-3">Delivery reference</th><th className="pb-3">Error</th></tr></thead><tbody>{attempts.length ? attempts.map(attempt => <tr key={attempt.id} className="border-b border-neutral-200 text-sm"><td className="py-4 text-neutral-600">{new Date(attempt.createdAt).toLocaleString()}</td><td className="py-4 font-bold uppercase">{attempt.adapter}</td><td className="py-4"><span className={cn("px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em]", attempt.status === "succeeded" ? "bg-black text-white" : attempt.status === "failed" ? "bg-[#e31b23] text-white" : "bg-neutral-100")}>{attempt.status}</span></td><td className="py-4">{attempt.deliveryUrl ? <a className="inline-flex items-center gap-1 underline decoration-[#e31b23] decoration-2 underline-offset-4" href={attempt.deliveryUrl} target="_blank" rel="noreferrer">{attempt.deliveryReference}<ArrowUpRight className="h-3.5 w-3.5" /></a> : attempt.deliveryReference ?? "—"}</td><td className="py-4 max-w-48 text-xs text-[#e31b23]">{attempt.errorMessage ?? "—"}</td></tr>) : <tr><td className="py-8 text-sm text-neutral-600" colSpan={5}>Every started, successful, duplicate, and failed delivery will be retained here.</td></tr>}</tbody></table></div>
           </section>
         </main>
