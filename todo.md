@@ -20,3 +20,6 @@
 - [x] Sync the completed project into the selected public GitHub repository without committing secrets.
 - [x] Redesign the studio as Swiss Systems 2.0 with more editorial breathing room, refined navigation, and sharper workflow hierarchy while preserving all campaign operations.
 - [x] Verify the Swiss Systems 2.0 redesign at desktop and mobile breakpoints without regressing the authenticated product flows.
+- [x] Prevent empty or too-short campaign names from reaching the campaign-create mutation, with clear inline client guidance.
+- [x] Ensure the scheduler query always returns a defined, stable result when no scheduler settings exist.
+- [x] Add regression tests and verify the repaired campaign creation and scheduler-empty-state paths.

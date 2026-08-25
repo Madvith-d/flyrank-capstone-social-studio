@@ -12,6 +12,7 @@ import { ConstraintViolation, assertVariantIsValid } from "./campaigns/constrain
 import { generateAllDeterministicVariants } from "./campaigns/generation";
 import { resolveCanonicalSource } from "./campaigns/ingest";
 import { runConfiguredDueSlotProcessor } from "./campaigns/runtime";
+import { resolveSchedulerState } from "./campaigns/schedulerState";
 import { assertVariantCanBeScheduled } from "./campaigns/workflow";
 
 const campaignInput = z.object({
@@ -127,7 +128,9 @@ export const appRouter = router({
     runDueProcessor: protectedProcedure.mutation(async () => runConfiguredDueSlotProcessor()),
   }),
   scheduler: router({
-    get: protectedProcedure.query(({ ctx }) => db.getSchedulerSetting(ctx.user.id)),
+    get: protectedProcedure.query(async ({ ctx }) =>
+      resolveSchedulerState(ctx.user.id, await db.getSchedulerSetting(ctx.user.id))
+    ),
     activate: protectedProcedure
       .input(z.object({ cronExpression: z.string().regex(/^\S+(\s+\S+){5}$/, "Use a six-field UTC cron expression.") }))
       .mutation(async ({ ctx, input }) => {

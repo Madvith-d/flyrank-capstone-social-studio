@@ -21,3 +21,7 @@ The connected personal-browser preview reached the protected sign-in gate, but t
 ## Swiss Systems 2.0 redesign check
 
 The updated desktop workspace rendered as an editorial operations console with a strengthened left rail, numbered navigation, a more spacious asymmetric hero, a dedicated red control field, compact operational metrics, and consistently proportioned workflow modules. The 375px capture retained the bold hierarchy without overlap: the top brand rail, operator strip, navigation, compact status metrics, and source handoff remained readable and touch-accessible. The new navigation is also functional: each rail item now scrolls to its related source, schedule, or ledger section.
+
+## Validation and scheduler-state repair
+
+The live preview initially showed the normal transient query spinner after the server restart, then rendered the complete authenticated workspace. The empty campaign-name state now displays an inline **Campaign name is required** message and disables the create action before it can submit invalid input. The absent scheduler record now resolves to the documented disabled default state, so the workspace remains rendered without the previous undefined-query failure. The latest browser logs after the restart contained only connection/debug entries, not the former scheduler undefined-data or campaign-name Zod errors.

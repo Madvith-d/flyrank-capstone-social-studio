@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { startLogin } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { cn } from "@/lib/utils";
+import { getCampaignNameError } from "@shared/campaignInput";
 import {
   ArrowUpRight,
   CalendarDays,
@@ -54,6 +55,7 @@ export default function Home() {
   const [sourceUrl, setSourceUrl] = useState("");
   const [sourceContent, setSourceContent] = useState("");
   const [scheduleTimes, setScheduleTimes] = useState<Record<number, string>>({});
+  const campaignNameError = getCampaignNameError(campaignName);
   const campaignInput = useMemo(
     () => (selectedCampaignId ? { campaignId: selectedCampaignId } : undefined),
     [selectedCampaignId]
@@ -128,8 +130,12 @@ export default function Home() {
 
   const handleCreate = (event: FormEvent) => {
     event.preventDefault();
+    if (campaignNameError) {
+      toast.error(campaignNameError);
+      return;
+    }
     createCampaign.mutate({
-      name: campaignName,
+      name: campaignName.trim(),
       sourceKind,
       sourceUrl: sourceKind === "url" ? sourceUrl : undefined,
       canonicalContent: sourceKind === "markdown" ? sourceContent : undefined,
@@ -237,12 +243,13 @@ export default function Home() {
                 <Plus className="h-5 w-5 text-[#e31b23]" />
               </div>
               <label className="field-label">Campaign name</label>
-              <Input value={campaignName} onChange={event => setCampaignName(event.target.value)} placeholder="e.g. Reliability essay" className="studio-input" />
+              <Input value={campaignName} onChange={event => setCampaignName(event.target.value)} placeholder="e.g. Reliability essay" aria-invalid={Boolean(campaignNameError)} aria-describedby="campaign-name-help" className={cn("studio-input", campaignNameError && "border-[#e31b23]!")} />
+              <p id="campaign-name-help" aria-live="polite" className={cn("mt-2 text-[11px] leading-4", campaignNameError ? "text-[#e31b23]" : "text-neutral-500")}>{campaignNameError ?? "Give the stored source a clear internal campaign name."}</p>
               <div className="mt-5 grid grid-cols-2 gap-2">
                 {(["markdown", "url"] as const).map(kind => <button key={kind} type="button" onClick={() => setSourceKind(kind)} className={cn("border border-black px-3 py-2 text-left text-[10px] font-bold uppercase tracking-[0.12em]", sourceKind === kind ? "bg-black text-white" : "hover:bg-[#e31b23] hover:text-white")}>{kind === "markdown" ? "Paste text" : "Fetch URL"}</button>)}
               </div>
               {sourceKind === "markdown" ? <><label className="field-label mt-5">Stored Markdown / text</label><Textarea value={sourceContent} onChange={event => setSourceContent(event.target.value)} placeholder="Paste the canonical blog post. Every variant will be generated from this stored source only." className="studio-textarea min-h-40" /></> : <><label className="field-label mt-5">Published source URL</label><Input value={sourceUrl} onChange={event => setSourceUrl(event.target.value)} placeholder="https://example.com/blog/post" className="studio-input" /><p className="mt-3 text-xs leading-5 text-neutral-500">Only public http(s) pages are fetched. Private and local addresses are refused.</p></>}
-              <Button disabled={createCampaign.isPending} type="submit" className="mt-6 w-full rounded-none bg-[#e31b23] font-bold uppercase tracking-[0.12em] text-white hover:bg-black">{createCampaign.isPending ? <Loader2 className="animate-spin" /> : "Store canonical source"}<ChevronRight className="ml-2 h-4 w-4" /></Button>
+              <Button disabled={createCampaign.isPending || Boolean(campaignNameError)} type="submit" className="mt-6 w-full rounded-none bg-[#e31b23] font-bold uppercase tracking-[0.12em] text-white hover:bg-black">{createCampaign.isPending ? <Loader2 className="animate-spin" /> : "Store canonical source"}<ChevronRight className="ml-2 h-4 w-4" /></Button>
             </form>
 
             <section className="bg-white p-6 sm:p-8 lg:col-span-7 lg:p-10">
